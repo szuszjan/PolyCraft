@@ -1,0 +1,11 @@
+## .NET / Visual Studio build artifacts
+bin/
+obj/
+*.user
+*.suo
+
+## Editor / OS cruft
+.vs/
+.vscode/
+Thumbs.db
+.DS_Store
