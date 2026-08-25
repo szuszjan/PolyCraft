@@ -208,6 +208,8 @@
                     <MenuItem Header="Export _OBJ..." Click="ExportObj_Click" />
                     <MenuItem Header="Export _STL..." Click="ExportStl_Click" />
                     <Separator />
+                    <MenuItem Header="_Render..." Click="Render_Click" />
+                    <Separator />
                     <MenuItem Header="E_xit" Click="Exit_Click" />
                 </MenuItem>
             </Menu>
@@ -257,7 +259,7 @@
 
             <!-- Center: 3D viewport -->
             <Grid Grid.Column="1">
-                <Border Background="#FF1E1E1E"
+                <Border x:Name="ViewportBorder" Background="#FF1E1E1E"
                         MouseDown="Viewport_MouseDown" MouseUp="Viewport_MouseUp"
                         MouseMove="Viewport_MouseMove" MouseWheel="Viewport_MouseWheel"
                         MouseLeave="Viewport_MouseLeave">

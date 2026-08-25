@@ -5,6 +5,7 @@ Imports System.Text.Json
 Imports System.Windows
 Imports System.Windows.Input
 Imports System.Windows.Media
+Imports System.Windows.Media.Imaging
 Imports System.Windows.Media.Media3D
 
 Namespace PolyCraft
@@ -1311,6 +1312,45 @@ Partial Class MainWindow
                 MessageBox.Show("Export failed:" & Environment.NewLine & ex.Message, "Export STL", MessageBoxButton.OK, MessageBoxImage.Error)
             End Try
         End If
+    End Sub
+
+    ''' <summary>Captures the current view as a PNG, showing only the model - no origin axis
+    ''' indicator, selection outline, or transform gizmo.</summary>
+    Private Sub Render_Click(sender As Object, e As RoutedEventArgs)
+        If sceneObjects.Count = 0 Then
+            MessageBox.Show("Nothing to render yet.", "Render", MessageBoxButton.OK, MessageBoxImage.Information)
+            Return
+        End If
+
+        Dim dlg As New Microsoft.Win32.SaveFileDialog()
+        dlg.Filter = "PNG Image (*.png)|*.png"
+        dlg.FileName = "render.png"
+        If dlg.ShowDialog() <> True Then Return
+
+        Dim previousContent = SceneVisual.Content
+        Try
+            Dim cleanGroup As New Model3DGroup()
+            For Each obj In sceneObjects
+                AddObjectModels(cleanGroup, obj)
+            Next
+            SceneVisual.Content = cleanGroup
+
+            Dim w = Math.Max(1, CInt(ViewportBorder.ActualWidth))
+            Dim h = Math.Max(1, CInt(ViewportBorder.ActualHeight))
+            Const scale As Integer = 2
+            Dim rtb As New RenderTargetBitmap(w * scale, h * scale, 96.0 * scale, 96.0 * scale, PixelFormats.Pbgra32)
+            rtb.Render(ViewportBorder)
+
+            Dim encoder As New PngBitmapEncoder()
+            encoder.Frames.Add(BitmapFrame.Create(rtb))
+            Using fs As New FileStream(dlg.FileName, FileMode.Create)
+                encoder.Save(fs)
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Render failed:" & Environment.NewLine & ex.Message, "Render", MessageBoxButton.OK, MessageBoxImage.Error)
+        Finally
+            SceneVisual.Content = previousContent
+        End Try
     End Sub
 
     Private Sub Exit_Click(sender As Object, e As RoutedEventArgs)

@@ -35,6 +35,8 @@ operations, and export to OBJ or STL.
 - **Color** — a palette of quick-pick swatches plus a hex code field per object.
 - **Save / load** — scenes save to a JSON project file and reload exactly as left.
 - **Export** — Wavefront OBJ and binary STL, ready for slicing or import elsewhere.
+- **Render** — File > Render saves a clean PNG of the current view (2x supersampled),
+  with the origin axis indicator, selection outline, and gizmo hidden.
 
 ## Requirements
 
