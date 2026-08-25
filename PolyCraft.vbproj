@@ -10,4 +10,10 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- ApplicationIcon above only embeds the native exe/taskbar icon; WPF's XAML Icon="Icon.ico"
+         needs the file separately included as a pack resource to resolve at runtime. -->
+    <Resource Include="Icon.ico" />
+  </ItemGroup>
+
 </Project>
